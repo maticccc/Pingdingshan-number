@@ -1,4 +1,4 @@
-# PINGDINGSHAN'S NUMBER
+# PINGDINGSHAN'S NUMBE
 
 ## UVOD
 (kratka predstavitev problema, opis generiranja in zbiranja podatkov - nauty geng, glavna ideja)
@@ -12,32 +12,32 @@ Za generacijo podatkov sva izbrala nauty.geng okolje, saj se nama je zdelo najbo
 #### Zbiranje oziroma shranjevanje
 
 
-## 1 ISKANJE PDS-JA NA GRAFIH Z i VOZLIŠČI i=1,2,...,8
+## 1 ISKANJE PDS-JA NA GRAFIH Z $i$ VOZLIŠČI, KJER JE $i = 1, 2, \dots ,8$
 (algoritem PDS, skupine grafov - lastnosti grafov)
 
 ### 1. 1 ALGORITEM PDS
-Za računanje Pingingshanovega števila posameznega grafa sva uporabila funkcijo $pds$. Ta za vhodni podatek sprejme graf $G$ in vrne njegovo Pingdingshanovo število. Vendar pa funkcija $pds$ kliče še eno dodatno funkcijo in sicer funkcijo $count_paths$, ki za vhodne podatke sprejme graf $G$, ter začetno in končno vozlišče, nato pa vrne število poti med tema vozliščema. Funkcija $pds$ nato uporabi $count_paths$ na vseh parih vozlišč grafa $G$ in nato prišteva te vrednosti. Končen rezultat je torej Pingdingshanovo število. Tu bova navedla psevdokodo funkcije $count_paths$, ki izgleda takole: 
+Za računanje Pingingshanovega števila posameznega grafa sva uporabila funkcijo $pds$. Ta za vhodni podatek sprejme graf $G$ in vrne njegovo Pingdingshanovo število. Vendar pa funkcija $pds$ kliče še eno dodatno funkcijo in sicer funkcijo $count_paths$, ki za vhodne podatke sprejme graf $G$, ter začetno in končno vozlišče, nato pa vrne število poti med tema vozliščema. Funkcija $pds$ nato uporabi $count\_paths$ na vseh parih vozlišč grafa $G$ in nato prišteva te vrednosti. Končen rezultat je torej Pingdingshanovo število. Tu bova navedla psevdokodo funkcije $count_paths$, ki izgleda takole: 
 
-def count_paths(G, start, end):
-  stevilo_poti = 0
-  trenutna_pot = []
-  trenutna_sosedje = []
-  while True:
-    if start = end:
-      stevilo_poti += 1
-    else:
-      if start is not in trenutna_pot:
-        trenutna_pot.append(start)
-        trenutna_sosedje.append(sosed(start))
-    start = None
-    while start is None:
-      try:
-        start = next(trenutna_sosedje[-1])
-      except:
-        trenutna_pot.pop()
-        trenutna_sosedje.pop()
-      if not trenutna_pot:
-        return stevilo_poti
+def count_paths(G, start, end): <br>
+  stevilo_poti = 0 <br>
+  trenutna_pot = [] <br>
+  trenutna_sosedje = [] <br>
+  while True: <br>
+    if start = end: <br>
+      stevilo_poti += 1 <br>
+    else: <br>
+      if start is not in trenutna_pot: <br>
+        trenutna_pot.append(start) <br>
+        trenutna_sosedje.append(sosed(start)) <br>
+    start = None <br>
+    while start is None: <br>
+      try: <br>
+        start = next(trenutna_sosedje[-1]) <br>
+      except: <br>
+        trenutna_pot.pop() <br>
+        trenutna_sosedje.pop() <br>
+      if not trenutna_pot: <br>
+        return stevilo_poti <br>
 
 Algoritem ima na začetku število poti nastavljeno na 0, seznama trenutnih poti in sosedov vozlišč na trenutni poti pa sta prazna. Algoritem nato prične izvajanje z začetnim vozliščem. Nato gre v while zanko kjer se poganja, dokler se ne izračuna končno število poti med začetnim in končnim vozliščem. Znotraj te zanke najprej preveri, če je vozlišče enako končnemu in v tem primeru število poti poveča za 1, saj to pomeni, da je pridelal eno možno pot med začetnim in končnim vozliščem. Če pa vozlišče ni enako končnemu, algoritem pogleda ali je vozlišče že v seznamu trenutne poti, če ni ga doda na seznam trenutne poti, na seznam sosedov vozlišč na trenutni poti pa doda njegovega naslednika. Nato vozlišče nastavi na None in gre v novo while zanko, v kateri na novo definira vozlišče kot naslednika zadnjega vozlišča iz seznama trenutne poti, če to ne obstaja pa iz obeh seznamov vrže zadnji element in če je seznam trenutnih poti prazen, vrne do takrat zgrajeno število poti med vozliščema.
 
@@ -45,20 +45,20 @@ S pomočjo tega algoritma sva nato računala maksimalne vrednosti $pds$-jev znot
 
 
 ### 1. 2 DVODELNI GRAFI
-Dvodelni ali bipartitni graf \( G = (V, E) \) je graf, katerega množico vozlišč \( V \) lahko razdelimo v dve dijunktni množici \( U \) in \( W \), tako da za vsako povezavo \( (u, w) \in E \) velja, da \( u \in U \) in \( w \in W \). Torej je graf dvodelen, če lahko njegova vozlišča razdelimo v dve množici tako, da nobeni dve vozlišči iz iste množice nista povezani z robom. Dvodelne grafe sva pridelala tako, da sva z uporabo naty.geng paketa iz generatorjev grafov filtrirala dvodelne grafe. To sva storila s pomočjo vgrajene funkcije v Sage-u $is.bipartite(G)$, ki vrne $True$, če je graf dvodelen in $False$ sicer.
+Dvodelni ali bipartitni graf $G = (V, E)$ je graf, katerega množico vozlišč $V$ lahko razdelimo v dve dijunktni množici $U$ in $W$, tako da za vsako povezavo $(u, w) \in E$ velja, da $u \in U$ in  $w \in W$. Torej je graf dvodelen, če lahko njegova vozlišča razdelimo v dve množici tako, da nobeni dve vozlišči iz iste množice nista povezani z robom. Dvodelne grafe sva pridelala tako, da sva z uporabo naty.geng paketa iz generatorjev grafov filtrirala dvodelne grafe. To sva storila s pomočjo vgrajene funkcije v Sage-u $is.bipartite(G)$, ki vrne $True$, če je graf dvodelen in $False$ sicer.
 
 ### 1. 3 KUBIČNI GRAFI
 Za kubične grafe velja, da imajo vsa vozlišča v takem grafu stopnjo natanko 3 (pravimo jim tudi 3-regularni grafi). Lastnost kubičnih grafov je tudi, da jih lahko dobimo le na sodo mnogo vozliščih. Kubične grafe sva tako kot vse ostale zgenerirala pomočjo nauty.geng paketa v Sageu. Argument, ki ga moramo podati za generacijo kubičnih grafo s pomočjo nauty.geng je "-d3 -D3", kjer nam številka poleg -d pove najnižjo stopnjo za vsa vozlišča v grafu, številka poleg -D pa najvišjo. Ker so vsi kubični grafi 3 regularni moramo obe številki postaviti na 3.
 
 ### 1. 4 GRAFI BREZ TRIKOTNIKOV
-Grafi brez trikotnikov oziroma grafi brez ciklov dolžine so definirani za vse možne i=1,2,...,8. Tudi te sva genenirala s pomočjo nauty.geng. Če želimo z nauty.geng zgenerirati grafe brez ciklov dolžine tri potrebujemo argument -t.
+Grafi brez trikotnikov oziroma grafi brez ciklov dolžine so definirani za vse možne $i = 1, 2, \dots ,8. Tudi te sva genenirala s pomočjo nauty.geng. Če želimo z nauty.geng zgenerirati grafe brez ciklov dolžine tri potrebujemo argument -t.
 
 ## 2 PRIMERJAVA PDS MED SKUPINAMI GRAFOV 
 (graf, navedba hipoteze)
 
 Za vsako družino grafov sva napisala funkcijo $max_pds()$, ki za vsakega od vozlišč $i = 1, \dots, 8$ izračuna maksimalno Pingdingshanovo število grafov znotraj te skupine. Vrednosti sva shranjevala v slovarje, kjer so ključi števila vozlišč, vrednosti pa maksimalna PDS. Slovar je torej oblike:
 
-$$\{1: \max\limits_{|V(G)|=1} PDS(G), \dots , 8: \max\limits_{|V(G)|=8} PDS(G)   \}$$
+{$$1: \max\limits_{|V(G)|=1} PDS(G), \dots , 8: \max\limits_{|V(G)|=8} PDS(G) $$}
 
 Nato sva izrisala graf, na katerem so rasti vseh $4$ skupin grafov v odvisnosti od števila vozlišč. Ker so bile razlike v maksimalnih številih $pds(G)$ med družinami grafov res velike, sva uporabila logaritmirano skalo. Namen tega je bil, da si lažje predstavljava, kateri grafi imajo večje število $pds$ in da sva potem lažje oblikovala hipotezo.
 
@@ -81,7 +81,7 @@ V nadaljevanju bova s stohastično analizo skušala to hipotezo potrditi ali ovr
 ## ČASOVNA ZAHTEVNOST
 Ker se število vseh možniih grafov, z večanjem števila vozlišč znatno veča, sva tu imela kar nekaj problemov z poganjanjem programov. Originalno sva imela namen testirati hipotezo na grafih do vključno $12$ vozlišč, a se je izkazalo, da se bo program izvajal preveč časa in sva se nato omejila na $8$ vozlišč. Kot je že bilo omenjeno zgoraj, je vseh možnih grafov na $8$ vozliščih preko $250$ milijonov, na $12$ vozliščih pa jih je že $2^{66}$, oziroma $7.378 \times 10^{19}$. Funkcija, ki opisuje rast števila vseh možnih grafov v odvisnosti od števila vozlišč je namreč enaka:
 
-$$ f(n) = 2^{\frac{n(n-1)}{2}} $$.
+$f(n) = 2^{\frac{n(n-1)}{2}}$.
 
 Časovno zahtevnost izvajanja programa sva zmanjšala tudi z uporabo paketa naugty.geng v Sage-u, ki ustavri zgolj generatorje grafov, grafov pa si ne zapomni. 
 
