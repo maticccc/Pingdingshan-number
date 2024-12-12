@@ -19,26 +19,43 @@ Za generacijo podatkov sva izbrala nauty.geng okolje, saj se nama je zdelo najbo
 Za računanje Pingingshanovega števila posameznega grafa sva uporabila funkcijo $pds$. Ta za vhodni podatek sprejme graf $G$ in vrne njegovo Pingdingshanovo število. Vendar pa funkcija $pds$ kliče še eno dodatno funkcijo in sicer funkcijo $count_paths$, ki za vhodne podatke sprejme graf $G$, ter začetno in končno vozlišče, nato pa vrne število poti med tema vozliščema. Funkcija $pds$ nato uporabi $count\_paths$ na vseh parih vozlišč grafa $G$ in nato prišteva te vrednosti. Končen rezultat je torej Pingdingshanovo število. Tu bova navedla psevdokodo funkcije $count_paths$, ki izgleda takole: 
 
 def count_paths(G, start, end): <br>
+<pre>
   stevilo_poti = 0 <br>
   trenutna_pot = [] <br>
   trenutna_sosedje = [] <br>
   while True: <br>
+  <pre>
     if start = end: <br>
+    <pre>
       stevilo_poti += 1 <br>
+    </pre>
     else: <br>
+      <pre>
       if start is not in trenutna_pot: <br>
+      <pre>
         trenutna_pot.append(start) <br>
         trenutna_sosedje.append(sosed(start)) <br>
+      </pre>
     start = None <br>
     while start is None: <br>
+    <pre>
       try: <br>
+      <pre>
         start = next(trenutna_sosedje[-1]) <br>
+        </pre>
       except: <br>
+      <pre>
         trenutna_pot.pop() <br>
         trenutna_sosedje.pop() <br>
+        </pre>
       if not trenutna_pot: <br>
+      <pre>
         return stevilo_poti <br>
+        </pre>
+  </pre>
+</pre>
 
+  
 Algoritem ima na začetku število poti nastavljeno na 0, seznama trenutnih poti in sosedov vozlišč na trenutni poti pa sta prazna. Algoritem nato prične izvajanje z začetnim vozliščem. Nato gre v while zanko kjer se poganja, dokler se ne izračuna končno število poti med začetnim in končnim vozliščem. Znotraj te zanke najprej preveri, če je vozlišče enako končnemu in v tem primeru število poti poveča za 1, saj to pomeni, da je pridelal eno možno pot med začetnim in končnim vozliščem. Če pa vozlišče ni enako končnemu, algoritem pogleda ali je vozlišče že v seznamu trenutne poti, če ni ga doda na seznam trenutne poti, na seznam sosedov vozlišč na trenutni poti pa doda njegovega naslednika. Nato vozlišče nastavi na None in gre v novo while zanko, v kateri na novo definira vozlišče kot naslednika zadnjega vozlišča iz seznama trenutne poti, če to ne obstaja pa iz obeh seznamov vrže zadnji element in če je seznam trenutnih poti prazen, vrne do takrat zgrajeno število poti med vozliščema.
 
 S pomočjo tega algoritma sva nato računala maksimalne vrednosti $pds$-jev znotraj posameznih družin grafov in jih med seboj primerjala.
@@ -58,7 +75,9 @@ Grafi brez trikotnikov oziroma grafi brez ciklov dolžine so definirani za vse m
 
 Za vsako družino grafov sva napisala funkcijo $max_pds()$, ki za vsakega od vozlišč $i = 1, \dots, 8$ izračuna maksimalno Pingdingshanovo število grafov znotraj te skupine. Vrednosti sva shranjevala v slovarje, kjer so ključi števila vozlišč, vrednosti pa maksimalna PDS. Slovar je torej oblike:
 
-{$$1: \max\limits_{|V(G)|=1} PDS(G), \dots , 8: \max\limits_{|V(G)|=8} PDS(G) $$}
+$$
+\{1: \max\limits_{|V(G)|=1} PDS(G), \dots , 8: \max\limits_{|V(G)|=8} PDS(G)\}
+$$
 
 Nato sva izrisala graf, na katerem so rasti vseh $4$ skupin grafov v odvisnosti od števila vozlišč. Ker so bile razlike v maksimalnih številih $pds(G)$ med družinami grafov res velike, sva uporabila logaritmirano skalo. Namen tega je bil, da si lažje predstavljava, kateri grafi imajo večje število $pds$ in da sva potem lažje oblikovala hipotezo.
 
