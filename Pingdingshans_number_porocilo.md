@@ -1,4 +1,4 @@
-# PINGDINGSHAN'S NUMBE
+# PINGDINGSHAN'S NUMBER
 
 ## UVOD
 (kratka predstavitev problema, opis generiranja in zbiranja podatkov - nauty geng, glavna ideja)
@@ -42,7 +42,7 @@ def count_paths(G, start, end):
             except:
                 trenutna_pot.pop()
                 trenutna_sosedje.pop()
-
+```
 
 
   
