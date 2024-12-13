@@ -83,6 +83,7 @@ V nadaljevanju bova s stohastično analizo skušala to hipotezo potrditi ali ovr
 ## 3 STOHASTIČNA ANALIZA
 (algoritem, primerjava pdsja orignalnih grafov z pdsjem novih)
 
+
 ### 3. 1 RAZMERJA PDS(G) MED ORIGINALNIMI IN SPREMENJENIMI GRAFI
 
 ## 4 POLNI GRAFI 
