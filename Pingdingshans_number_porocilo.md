@@ -1,5 +1,8 @@
 # PINGDINGSHAN'S NUMBER
 
+### NAVODILA ZA UPORABO
+Poženite celo datoteko test_sagea.ipynb.
+
 ## UVOD
 ### Kratka predstavitev/opis problema
 V okviru najinega projekta, sva iskala tako imenovano Pingdingshanovo število poznano tudi kot 'subpath-number'. To je število vseh poti v danem grafu, tudi trivialnih, torej poti dolžine 0. Tu je pot v grafu zaporedje vozlišč, kjer se ta ne smejo ponavljati. V jeziku Sage sva definirala algoritem PDS, ki  izračunava Pingdingshanovo število. Iskala sva ga le na povezanih grafih, kjer sva ločila in posebej obravnavala različne skupine grafov. Na vozliščih $i = 1, ... , 8$ sva za skupine kubičnih, dvodelnih, grafov brez trikotnikov in nazadnje še vseh grafov izračunala maksimalne vrednosti PDS-ja na posameznem vozlišču in nato te vrednosti primerjala med skupinami grafov. Dalje sva postavila hipotezo, katera skupina grafov bo imela največji PDS, nato pa naredila stohastično analizo, s pomočjo katere bova videla, ali se rezultati le-te skladajo z najino hipotezo, ali pa ji nasprotujejo. Argumentirala sva  rezultate stohastične analize in povzela ugotovitve.
@@ -241,6 +244,7 @@ Spodaj je grafičen prikaz razmerij za vsako družino grafov.
 ![](razmerje-vsi.png)
 ![](razmerje-dvodelni.png)
 ![](razmerje-brez-trikotnikov.png)
+![](razmerje-kubicni.png)
 
 
 Če opazujemo vsa razmerja lahko opazimo, da so narasla, ker se je število povezav v števcu zmanjšalo samo za 1, moramo velike spremembe v razmerju pripisati imenovalcu. Kot vemo bo številka večja, če bo imenovalec manjši iz česar lahko sklepamo, da je pds število v spremenjenih grafih precej padlo.  Pomembno se je zavedati tudi, da je funkcija, ki spreminja grafe nastavljena tako, da če ne najde povezave, ki ne bi bila most, ne odstrani nobene (to pomeni, da vrne isti graf). Slednje je posebej pomembno za grafe brez trikotnikov na nižjih i-jih, pri katerih so vse povezave mostovi. V tem primeru ne bi bilo smiselno gledati pds-ja na spremenjenem grafu, saj ta avtomatično razpade.
@@ -293,7 +297,6 @@ Ker se število vseh možniih grafov, z večanjem števila vozlišč znatno več
 
 $f(n) = 2^{\frac{n(n-1)}{2}}$.
 
-Časovno zahtevnost izvajanja programa sva zmanjšala tudi z uporabo paketa naugty.geng v Sage-u, ki ustavri zgolj generatorje grafov, grafov pa si ne zapomni. 
 
 ## ZAKLJUČEK
 V okviru tega projekta je bil najin cilj bolje razumeti in opisati spreminjanje števila vseh poti v grafu v odvisnosti od števila vozlišč, števila povezav in nenazadnje tipa grafa. Skozi eksperimentacijo na $4$ družinah grafov sva med njimi primerjala število vseh poti, nato pa sva število vseh poti primerjala še znotraj posameznih družin. Rezultati, ki sva jih dobila, gredo v prid najini hipotezi, torej da imajo polni grafi največje število vseh poti, saj imajo največ povezav in se zato število vseh poti med posameznima vozliščema poveča. Kljub temu pa sva hipotezo testirala na razmeroma majhnem številu grafov in zato ne drži nujno. 
