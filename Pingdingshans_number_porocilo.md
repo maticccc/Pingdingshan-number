@@ -9,7 +9,7 @@ V okviru najinega projekta, sva iskala tako imenovano Pingdingshanovo število p
 
 ### Generacija in zbiranje podatkov
 #### Generacija
-Za generacijo podatkov sva izbrala nauty.geng okolje, saj se nama je zdelo najbolj primerno iz večih razlogov. Funkcija nauty.geng ne zgenenrira vseh grafov, temveč zgolj generatorje za izbrane grafe na i vozliščih. To je bilo za najin program bolj učinkovito, saj si razen določenih grafov (tistih, ki so imeli največje pds število v posamezni skupini) nisva želela shraniti vseh grafov. To bi bilo za najin računalnik in program veliko prezahtevno, za občutek na 8 vozliščih je 268 435 456 možnih grafov. Poleg prezahtevnosti, pa je v prid ne shranjevanju potegnilo tudi dejstvo, da teh grafov za analizo Pingdingshanovega števila nisva potrebovala. Nauty.geng nama je torej omogočil, da si za vsako skupino pripraviva generatorje grafov na željenih vozliščih, nato pa z uporabo for zanke inzračunava pds števila za vsako skupino in si zapomniva zgolj največja pds števila v posameznih skupinah za pimerno število vozlišč. Nauty.geng kot argumente sprejme število vozlišč in poebne argumente za vsako od skupin grafov. Ti so navedeni pri posameznih skupinah. Funkcije za generacijo generatorjev grafov so med seboj zelo simetrične (vse kar se bistveno spremeni so argumenti v nauty.geng funkciji in določene specifike glede na skupino grafov) zato bova kot psavdo kodo navedla zgoraj omenjene funkcije zgolj za vse grafe.
+Za generacijo podatkov sva izbrala nauty.geng okolje, saj se nama je zdelo najbolj primerno iz večih razlogov. Funkcija nauty.geng ne zgenerira vseh grafov, temveč zgolj generatorje za izbrane grafe na i vozliščih. To je bilo za najin program bolj učinkovito, saj si razen določenih grafov (tistih, ki so imeli največje pds število v posamezni skupini) nisva želela shraniti vseh grafov. To bi bilo za najin računalnik in program veliko prezahtevno, za občutek na 8 vozliščih je 268 435 456 možnih grafov. Poleg prezahtevnosti, pa je v prid neshranjevanju potegnilo tudi dejstvo, da teh grafov za analizo Pingdingshanovega števila nisva potrebovala. Nauty.geng nama je torej omogočil, da si za vsako skupino pripraviva generatorje grafov na željenih vozliščih, nato pa z uporabo for zanke izračunava pds števila za vsako skupino in si zapomniva zgolj največja pds števila v posameznih skupinah za pimerno število vozlišč. Nauty.geng kot argumente sprejme število vozlišč in posebne argumente za vsako od skupin grafov. Ti so navedeni pri posameznih skupinah. Funkcije za generacijo generatorjev grafov so med seboj zelo simetrične (vse kar se bistveno spremeni so argumenti v nauty.geng funkciji in določene specifike glede na skupino grafov) zato bova kot psavdo kodo navedla zgoraj omenjene funkcije zgolj za vse grafe.
 
 PRIKAZ UPORABE NAUTY.GENG ZA PRIRPAVO GENERATORJEV:
 ```python
@@ -22,7 +22,7 @@ def gen_vsi_grafi():
 
 
 #### Zbiranje oziroma shranjevanje
-V najinem projektu naju je zanimala zgornja meja za pds števila na grafih v i vozlišči. Iz tega razloga sva se osredotočila samo na grafe, ki so v posameznih skupinah imeli maksimalno pds število, ter na njihove lastnosti. Te sva iz množice vseh grafov dobila tako, da sva najprej s poiskala največja pds števila na grafih z 1,2,...,8 za posamezne skupine nato pa si shranila zgolj graf v katerem je bila ta vrednost dosežena. Za shranjevanje teh grafov in njihovih vrednsoti pds števil se nama je zdel najbolj primere slovar. Tega sva zasnovala na način, da so bili ključi števila vozlišč od 1 do 8 (sprememba se pojavi pri kubičnih grafih), pripisane vrednosti pa pari (toupli), kjer je bil na prvem mestu graf s maksimalnim pds-jem, na drugem mestu pa ravno ta pds. MAnjša sprememb se je pojavila pri kubičnih grafih, katere lahko generiramo le na sodih vozliščih(več o kubičnih grafih v nadaljevaju).
+V najinem projektu naju je zanimala zgornja meja za pds števila na grafih v i vozlišči. Iz tega razloga sva se osredotočila samo na grafe, ki so v posameznih skupinah imeli maksimalno pds število, ter na njihove lastnosti. Te sva iz množice vseh grafov dobila tako, da sva najprej s poiskala največja pds števila na grafih z 1,2,...,8 za posamezne skupine nato pa si shranila zgolj graf v katerem je bila ta vrednost dosežena. Za shranjevanje teh grafov in njihovih vrednsoti pds števil se nama je zdel najbolj primere slovar. Tega sva zasnovala na način, da so bili ključi števila vozlišč od 1 do 8 (sprememba se pojavi pri kubičnih grafih), pripisane vrednosti pa pari (toupli), kjer je bil na prvem mestu graf s maksimalnim pds-jem, na drugem mestu pa ravno ta pds. Manjša sprememb se je pojavila pri kubičnih grafih, katere lahko generiramo le na sodih vozliščih (več o kubičnih grafih v nadaljevaju).
 PRIPRAVA SLOVARJA S POMOČJO GENERATORJEV ZA VSE GRAFE:
 ```python
 def pds_vsi():
@@ -110,7 +110,7 @@ Tu bova navedla najino hipotezo, ki je naslednja: največje število poti bodo i
 V nadaljevanju bova s stohastično analizo skušala to hipotezo potrditi ali ovreči.
 
 ## 3 STOHASTIČNA ANALIZA
-Stohastične analize sva se lotila tako, da sva za posamezno skupino vsem grafom, v katerih so bili doseženi maksimumi za število pds odstanila naključno povezavo, ki ni bila most. Ta pogoj je ključen zato, da graf, ki nastane še vedno ostane povezan (analizirala sva namreč pds število na povezanih grafih). Če se na hitro spomnimo; povezava je most, če bi brez nje graf razpadel na več komponent. Najina hipoteza je, da več kot ima graf povezav višji bo njegov pds.Iz te hipoteze bi sledilo, da če grafu odstanimo povezavo se bo to precej poznalo tudi na njegovem pds številu. V tem razdelku projekta sva torej grafov odstanila naključno povezavo, izračunala pds novega grafa in izračunala razmerje med številov povezav v grafu in njegovim pds-jem. Zadnje sva naredila zato, da sva lahko opazovala kako hitro pada pds, če grafu odstanjujemo povezave. Vse to sva naredila s sledečimi funkcijami:
+Stohastične analize sva se lotila tako, da sva za posamezno skupino vsem grafom, v katerih so bili doseženi maksimumi za število pds odstranila naključno povezavo, ki ni bila most. Ta pogoj je ključen zato, da graf, ki nastane še vedno ostane povezan (analizirala sva namreč pds število na povezanih grafih). Najina hipoteza je, da več kot ima graf povezav višji bo njegov pds. Iz te hipoteze bi sledilo, če grafu odstranimo povezavo, se bo to precej poznalo tudi na njegovem pds številu. V tem razdelku projekta sva torej grafom odstranila naključno povezavo, izračunala pds novega grafa in izračunala razmerje med številom povezav v grafu in njegovim pds-jem. Slednje sva naredila, da bi lahko opazovala kako hitro pada pds, če grafu odstranjujemo povezave. Vse to sva naredila s sledečimi funkcijami:
 ```python
 import random
 def odstranitev_povezave(graf):
@@ -144,7 +144,7 @@ def razmerje(stevilo_povezav, slovar_pds):
 
     return razmerja
 ```
-Poleg teh funkcij sva za vsako skupino grafov naredila tudi nov slovar spremenjenih grafov ( grafov z odstranjeno eno povezavo).
+Poleg teh funkcij sva za vsako skupino grafov naredila tudi nov slovar spremenjenih grafov (grafov z odstranjeno eno povezavo).
 Primer generacije novega slovarja za vse grafe:
 
 ```python
@@ -160,7 +160,7 @@ def nov_grafi_vsi():
     return spremenjeni_grafi
 ```
 ### 3. 1 RAZMERJA PDS(G) MED ORIGINALNIMI IN SPREMENJENIMI GRAFI
-S pomočjo zgornjih funkcij in opisanega procesa sva prišla do slečih razmerij:
+S pomočjo zgornjih funkcij in opisanega procesa sva prišla do sledečih razmerij:
 
 VSI GRAFI-nespremenjeni:
 ```python
@@ -233,7 +233,7 @@ KUBIČNI GRAFI - nespremenjeni:
 {4: 0.17647058823529413, 6: 0.06666666666666667,
 8: 0.026905829596412557}
 ```
-KUBIČNI GRAFI - spremenjeni: (OPOMBA: Če kubičnemu grafu odstanimo eno povezavo, ta ni več kubičen, saj v njem obstajata dve vozlišči, ki nimata več stopnje 3.)
+KUBIČNI GRAFI - spremenjeni: (OPOMBA: Če kubičnemu grafu odstranimo eno povezavo, ta ni več kubičen, saj v njem obstajata dve vozlišči, ki nimata več stopnje 3.)
 ```python
 {4: 0.21739130434782608, 6: 0.09195402298850575,
 8: 0.039285714285714285}
@@ -251,7 +251,7 @@ Spodaj je grafičen prikaz razmerij za vsako družino grafov.
 
 
 ## 4 POLNI GRAFI 
-Analize polnih grafov sva se lotila, da bi se približala potrditvi najine hipoteze. V tem delu naloge sva naprej naredila slovar vseh polnih grafov, tako da sva s for zanko šla čez vse grafe in preverjala, če ima graf maksimalno število povezav (to je toliko kot jih ima poln graf). Nato pa sva izračunala še pds števila za dobljene polne grafe. To sva nareila s sledečo funkcijo:
+Analize polnih grafov sva se lotila, da bi se približala potrditvi najine hipoteze. V tem delu naloge sva naprej naredila slovar vseh polnih grafov, tako da sva s for zanko šla čez vse grafe in preverjala, če ima graf maksimalno število povezav (to je toliko kot jih ima poln graf). Nato pa sva izračunala še pds števila za dobljene polne grafe. To sva naredila s sledečo funkcijo:
 ```python
 def slovar_polni_grafi():
     slovar ={}
@@ -275,7 +275,7 @@ Rezultat je sledeč:
  8: (Graph on 8 vertices, 54804)}
 
 ```
-Če ta rezultat primerjamo z rezultatom maximalnega pds števila na vseh grafih. tj:
+Če ta rezultat primerjamo z rezultatom maximalnega pds števila na vseh grafih. Tj:
 ```python
 {1: (Graph on 1 vertex, 1),
  2: (Graph on 2 vertices, 3),
@@ -293,7 +293,7 @@ KOMENTAR: Prvi slovar ne vsebuje rezultatov za 1 in 2 vozlišči, vendar vemo, d
 
 
 ## ČASOVNA ZAHTEVNOST
-Ker se število vseh možniih grafov, z večanjem števila vozlišč znatno veča, sva tu imela kar nekaj problemov z poganjanjem programov. Originalno sva imela namen testirati hipotezo na grafih do vključno $12$ vozlišč, a se je izkazalo, da se bo program izvajal preveč časa in sva se nato omejila na $8$ vozlišč. Kot je že bilo omenjeno zgoraj, je vseh možnih grafov na $8$ vozliščih preko $250$ milijonov, na $12$ vozliščih pa jih je že $2^{66}$, oziroma $7.378 \times 10^{19}$. Funkcija, ki opisuje rast števila vseh možnih grafov v odvisnosti od števila vozlišč je namreč enaka:
+Ker se število vseh možniih grafov, z večanjem števila vozlišč znatno veča, sva tu imela kar nekaj problemov s poganjanjem programov. Originalno sva imela namen testirati hipotezo na grafih do vključno $12$ vozlišč, a se je izkazalo, da se bo program izvajal preveč časa in sva se nato omejila na $8$ vozlišč. Kot je že bilo omenjeno zgoraj, je vseh možnih grafov na $8$ vozliščih preko $250$ milijonov, na $12$ vozliščih pa jih je že $2^{66}$, oziroma $7.378 \times 10^{19}$. Funkcija, ki opisuje rast števila vseh možnih grafov v odvisnosti od števila vozlišč je namreč enaka:
 
 $f(n) = 2^{\frac{n(n-1)}{2}}$.
 
