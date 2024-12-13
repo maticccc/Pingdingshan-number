@@ -241,10 +241,53 @@ KUBIČNI GRAFI - spremenjeni: (OPOMBA: Če kubičnemu grafu odstanimo eno poveza
 {4: 0.21739130434782608, 6: 0.09195402298850575,
 8: 0.039285714285714285}
 ```
-Če opazujemo vsa razmerja lahko opazimo, da so narasla, ker se je število povezav v števcu zmanjšalo samo za 1, moramo velike spremembe v razmerju pripisati imenovalcu. Kot vemo bo številka večja, če bo imenovalec manjši iz česar lahko sklepamo, da je pds število v spremenjenih grafih precej padlo. Opazimo tudi, da večje kot je število vozlišč bolj opazna je sprememba v razmerju. Pomembno se je zavedati tudi, da je funkcija, ki spreminja grafe nastavljena tako, da če ne najde povezave, ki ne bi bila most, ne osstani nobene (to pomeni, da vrne isti graf). Slednje je posebej pomembno za grafe brez trikotnikov na nižjih i-jih, pri katerih so vse povezave mostovi. V tem primeru ne bi bilo smiselno gledati pds-ja na spremenjenem grafu, saj ta avtomatično razpade.
+####3.1.2 GRAFIČNI PRIKAZ
+
+Če opazujemo vsa razmerja lahko opazimo, da so narasla, ker se je število povezav v števcu zmanjšalo samo za 1, moramo velike spremembe v razmerju pripisati imenovalcu. Kot vemo bo številka večja, če bo imenovalec manjši iz česar lahko sklepamo, da je pds število v spremenjenih grafih precej padlo.  Pomembno se je zavedati tudi, da je funkcija, ki spreminja grafe nastavljena tako, da če ne najde povezave, ki ne bi bila most, ne odstrani nobene (to pomeni, da vrne isti graf). Slednje je posebej pomembno za grafe brez trikotnikov na nižjih i-jih, pri katerih so vse povezave mostovi. V tem primeru ne bi bilo smiselno gledati pds-ja na spremenjenem grafu, saj ta avtomatično razpade.
+
 
 ## 4 POLNI GRAFI 
 (podatki v prid hipoteze)
+Analize polnih grafov sva se lotila, da bi se približala potrditvi najine hipoteze. V tem delu naloge sva naprej naredila slovar vseh polnih grafov, tako da sva s for zanko šla čez vse grafe in preverjala, če ima graf maksimalno število povezav (to je toliko kot jih ima poln graf). Nato pa sva izračunala še pds števila za dobljene polne grafe. To sva nareila s sledečo funkcijo:
+```python
+def slovar_polni_grafi():
+    slovar ={}
+    for gen in gen_vsi_grafi:
+        for g in gen:
+            graf = Graph(g)  # Pretvori v SageMath graf
+            n = graf.order()  # Število vozlišč
+            max_edges = n * (n - 1) // 2  # Število povezav v polnem grafu
+            if graf.size() == max_edges:  # Preveri, ali ima maksimalno število povezav
+                slovar[graf.order()] = (graf, pds(graf))
+    return slovar
+
+```
+Rezultat je sledeč:
+```python
+{3: (Graph on 3 vertices, 9),
+ 4: (Graph on 4 vertices, 34),
+ 5: (Graph on 5 vertices, 165),
+ 6: (Graph on 6 vertices, 981),
+ 7: (Graph on 7 vertices, 6853),
+ 8: (Graph on 8 vertices, 54804)}
+
+```
+Če ta rezultat primerjamo z rezultatom maximalnega pds števila na vseh grafih. tj:
+```python
+{1: (Graph on 1 vertex, 1),
+ 2: (Graph on 2 vertices, 3),
+ 3: (Graph on 3 vertices, 9),
+ 4: (Graph on 4 vertices, 34),
+ 5: (Graph on 5 vertices, 165),
+ 6: (Graph on 6 vertices, 981),
+ 7: (Graph on 7 vertices, 6853),
+ 8: (Graph on 8 vertices, 54804)}
+```
+Lahko opazimo, da se številke ujemajo. To bi potrdilo najino hipotezo.
+
+KOMENTAR: Prvi slovar ne vsebuje rezultatov za 1 in 2 vozlišči, vendar vemo, da sta polna grafa edina možna poveza na grafa na 1 in 2 vozliščih, torej se tudi ti števili ujemata.
+
+
 
 ## ČASOVNA ZAHTEVNOST
 Ker se število vseh možniih grafov, z večanjem števila vozlišč znatno veča, sva tu imela kar nekaj problemov z poganjanjem programov. Originalno sva imela namen testirati hipotezo na grafih do vključno $12$ vozlišč, a se je izkazalo, da se bo program izvajal preveč časa in sva se nato omejila na $8$ vozlišč. Kot je že bilo omenjeno zgoraj, je vseh možnih grafov na $8$ vozliščih preko $250$ milijonov, na $12$ vozliščih pa jih je že $2^{66}$, oziroma $7.378 \times 10^{19}$. Funkcija, ki opisuje rast števila vseh možnih grafov v odvisnosti od števila vozlišč je namreč enaka:
