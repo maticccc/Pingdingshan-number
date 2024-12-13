@@ -9,9 +9,41 @@ V okviru najinega projekta, sva iskala tako imenovano Pingdingshanovo število p
 #### Generacija
 Za generacijo podatkov sva izbrala nauty.geng okolje, saj se nama je zdelo najbolj primerno iz večih razlogov. Funkcija nauty.geng ne zgenenrira vseh grafov, temveč zgolj generatorje za izbrane grafe na i vozliščih. To je bilo za najin program bolj učinkovito, saj si razen določenih grafov (tistih, ki so imeli največje pds število v posamezni skupini) nisva želela shraniti vseh grafov. To bi bilo za najin računalnik in program veliko prezahtevno, za občutek na 8 vozliščih je 268 435 456 možnih grafov. Poleg prezahtevnosti, pa je v prid ne shranjevanju potegnilo tudi dejstvo, da teh grafov za analizo Pingdingshanovega števila nisva potrebovala. Nauty.geng nama je torej omogočil, da si za vsako skupino pripraviva generatorje grafov na željenih vozliščih, nato pa z uporabo for zanke inzračunava pds števila za vsako skupino in si zapomniva zgolj največja pds števila v posameznih skupinah za pimerno število vozlišč. Nauty.geng kot argumente sprejme število vozlišč in poebne argumente za vsako od skupin grafov. Ti so navedeni pri posameznih skupinah. Funkcije za generacijo generatorjev grafov so med seboj zelo simetrične (vse kar se bistveno spremeni so argumenti v nauty.geng funkciji in določene specifike glede na skupino grafov) zato bova kot psavdo kodo navedla zgoraj omenjene funkcije zgolj za vse grafe.
 
+PRIKAZ UPORABE NAUTY.GENG ZA PRIRPAVO GENERATORJEV:
+```python
+def gen_vsi_grafi():
+    gen_vseh = []
+    for i in range(1, 9):
+        gen_vseh.append(graphs.nauty_geng(f"{i} -c"))
+    return gen_vseh
+```
+
+
 #### Zbiranje oziroma shranjevanje
 V najinem projektu naju je zanimala zgornja meja za pds števila na grafih v i vozlišči. Iz tega razloga sva se osredotočila samo na grafe, ki so v posameznih skupinah imeli maksimalno pds število, ter na njihove lastnosti. Te sva iz množice vseh grafov dobila tako, da sva najprej s poiskala največja pds števila na grafih z 1,2,...,8 za posamezne skupine nato pa si shranila zgolj graf v katerem je bila ta vrednost dosežena. Za shranjevanje teh grafov in njihovih vrednsoti pds števil se nama je zdel najbolj primere slovar. Tega sva zasnovala na način, da so bili ključi števila vozlišč od 1 do 8 (sprememba se pojavi pri kubičnih grafih), pripisane vrednosti pa pari (toupli), kjer je bil na prvem mestu graf s maksimalnim pds-jem, na drugem mestu pa ravno ta pds. MAnjša sprememb se je pojavila pri kubičnih grafih, katere lahko generiramo le na sodih vozliščih(več o kubičnih grafih v nadaljevaju).
-
+PRIPRAVA SLOVARJA S POMOČJO GENERATORJEV ZA VSE GRAFE:
+```python
+def pds_vsi():
+    slovar_vsi = {} 
+    for grafi in gen_vsi_grafi:
+        for G in grafi:
+            maks = 0
+            if pds(G) == max(maks, pds(G)):
+                maks = pds(G)
+        slovar_vsi[G.order()] = (G, maks)
+    return slovar_vsi
+```
+Zgronja funkcija vrne sledeči slovar:ž
+```python
+{1: (Graph on 1 vertex, 1),
+ 2: (Graph on 2 vertices, 3),
+ 3: (Graph on 3 vertices, 9),
+ 4: (Graph on 4 vertices, 34),
+ 5: (Graph on 5 vertices, 165),
+ 6: (Graph on 6 vertices, 981),
+ 7: (Graph on 7 vertices, 6853),
+ 8: (Graph on 8 vertices, 54804)}
+```
 
 ## 1 ISKANJE PDS-JA NA GRAFIH Z $i$ VOZLIŠČI, KJER JE $i = 1, 2, \dots ,8$
 (algoritem PDS, skupine grafov - lastnosti grafov)
@@ -51,7 +83,6 @@ Algoritem ima na začetku število poti nastavljeno na 0, seznama trenutnih poti
 
 S pomočjo tega algoritma sva nato računala maksimalne vrednosti $pds$-jev znotraj posameznih družin grafov in jih med seboj primerjala.
 
-
 ### 1. 2 DVODELNI GRAFI
 Dvodelni ali bipartitni graf $G = (V, E)$ je graf, katerega množico vozlišč $V$ lahko razdelimo v dve disjunktni množici $U$ in $W$, tako da za vsako povezavo $(u, w) \in E$ velja, da $u \in U$ in  $w \in W$. Torej je graf dvodelen, če lahko njegova vozlišča razdelimo v dve množici tako, da nobeni dve vozlišči iz iste množice nista povezani z robom. Dvodelne grafe sva pridelala tako, da sva z uporabo naty.geng paketa iz generatorjev grafov filtrirala dvodelne grafe. To sva storila s pomočjo vgrajene funkcije v Sage-u $is.bipartite(G)$, ki vrne $True$, če je graf dvodelen in $False$ sicer.
 
@@ -82,9 +113,97 @@ V nadaljevanju bova s stohastično analizo skušala to hipotezo potrditi ali ovr
 
 ## 3 STOHASTIČNA ANALIZA
 (algoritem, primerjava pdsja orignalnih grafov z pdsjem novih)
+Stohastične analize sva se lotila tako, da sva za posamezno skupino vsem grafom, v katerih so bili doseženi maksimumi za število pds odstanila naključno povezavo, ki ni bila most. Ta pogoj je ključen zato, da graf, ki nastane še vedno ostane povezan (analizirala sva namreč pds število na povezanih grafih). Če se na hitro spomnimo; povezava je most, če bi brez nje graf razpadel na več komponent. Najina hipoteza je, da več kot ima graf povezav višji bo njegov pds.Iz te hipoteze bi sledilo, da če grafu odstanimo povezavo se bo to precej poznalo tudi na njegovem pds številu. V tem razdelku projekta sva torej grafov odstanila naključno povezavo, izračunala pds novega grafa in izračunala razmerje med številov povezav v grafu in njegovim pds-jem. Zadnje sva naredila zato, da sva lahko opazovala kako hitro pada pds, če grafu odstanjujemo povezave. Vse to sva naredila s sledečimi funkcijami:
+```python
+import random
+def odstranitev_povezave(graf):
+    if not graf.edges():
+        return graf
+    else:
+        mostovi = set(graf.bridges())
+        vse_povezave = set(graf.edges())
+        ne_most = vse_povezave - mostovi
+        if not ne_most:
+            return graf
+        else:
+            nak_pov = random.choice(list(ne_most))
+            graf.delete_edge(nak_pov)
+            return graf
 
 
+def stevilo_povezav(slovar):
+    slovar_povezav = {}
+    for kljuc in slovar.keys():
+        graf,maks = slovar[kljuc]
+        slovar_povezav[kljuc]= graf.num_edges()
+    return slovar_povezav
+
+
+def razmerje(stevilo_povezav, slovar_pds):
+    razmerja = {}
+    for kljuc in stevilo_povezav:
+        graf,stevilo = slovar_pds[kljuc]
+        razmerja[kljuc] = stevilo_povezav[kljuc] / stevilo
+
+    return razmerja
+```
+Poleg teh funkcij sva za vsako skupino grafov naredila tudi nov slovar spremenjenih grafov ( grafov z odstranjeno eno povezavo).
+Primer generacije novega slovarja za vse grafe:
+
+```python
+def nov_grafi_vsi():
+    spremenjeni_grafi = {}
+    for kljuc in pds_vsi:
+        graf, pds_grafa = pds_vsi[kljuc]
+        kopija = graf.copy()
+        nov_graf = odstranitev_povezave(kopija)
+        nov_pds = pds(nov_graf)
+        spremenjeni_grafi[kljuc] = (nov_graf, nov_pds)
+    
+    return spremenjeni_grafi
+```
 ### 3. 1 RAZMERJA PDS(G) MED ORIGINALNIMI IN SPREMENJENIMI GRAFI
+S pomočjo zgornjih funkcij in opisanega procesa sva prišla do slečih razmerij:
+VSI GRAFI:
+    -nespremenjeni:
+        ```python
+        {1: 0.0,
+         2: 0.3333333333333333,
+         3: 0.3333333333333333,
+         4: 0.17647058823529413,
+         5: 0.06060606060606061,
+         6: 0.01529051987767584,
+         7: 0.0030643513789581204,
+         8: 0.0005109116122910736}
+        ```
+    -spremenjeni:
+        ```python
+        {1: 0.0,
+         2: 0.3333333333333333,
+         3: 0.3333333333333333,
+         4: 0.21739130434782608,
+         5: 0.07758620689655173,
+         6: 0.019444444444444445,
+         7: 0.0038299502106472617,
+         8: 0.0006270174868210213}
+        ```
+
+        
+        
+DVODELNI GRAFI
+    -nespremenjeni:
+        ```python
+        {1: 0.0,
+         2: 0.3333333333333333,
+         3: 0.3333333333333333,
+         4: 0.25,
+         5: 0.26666666666666666,
+         6: 0.06382978723404255,
+         7: 0.07258064516129033,
+         8: 0.046413502109704644}
+        ```
+
+    
 
 ## 4 POLNI GRAFI 
 (podatki v prid hipoteze)
