@@ -1,7 +1,6 @@
 # PINGDINGSHAN'S NUMBER
 
 ## UVOD
-(kratka predstavitev problema, opis generiranja in zbiranja podatkov - nauty geng, glavna ideja)
 ### Kratka predstavitev/opis problema
 V okviru najinega projekta, sva iskala tako imenovano Pingdingshanovo število poznano tudi kot 'subpath-number'. To je število vseh poti v danem grafu, tudi trivialnih, torej poti dolžine 0. Tu je pot v grafu zaporedje vozlišč, kjer se ta ne smejo ponavljati. V jeziku Sage sva definirala algoritem PDS, ki  izračunava Pingdingshanovo število. Iskala sva ga le na povezanih grafih, kjer sva ločila in posebej obravnavala različne skupine grafov. Na vozliščih $i = 1, ... , 8$ sva za skupine kubičnih, dvodelnih, grafov brez trikotnikov in nazadnje še vseh grafov izračunala maksimalne vrednosti PDS-ja na posameznem vozlišču in nato te vrednosti primerjala med skupinami grafov. Dalje sva postavila hipotezo, katera skupina grafov bo imela največji PDS, nato pa naredila stohastično analizo, s pomočjo katere bova videla, ali se rezultati le-te skladajo z najino hipotezo, ali pa ji nasprotujejo. Argumentirala sva  rezultate stohastične analize in povzela ugotovitve.
 
@@ -46,8 +45,6 @@ Zgronja funkcija vrne sledeči slovar:
 ```
 
 ## 1 ISKANJE PDS-JA NA GRAFIH Z $i$ VOZLIŠČI, KJER JE $i = 1, 2, \dots ,8$
-(algoritem PDS, skupine grafov - lastnosti grafov)
-
 ### 1. 1 ALGORITEM PDS
 Za računanje Pingingshanovega števila posameznega grafa sva uporabila funkcijo $pds$. Ta za vhodni podatek sprejme graf $G$ in vrne njegovo Pingdingshanovo število. Vendar pa funkcija $pds$ kliče še eno dodatno funkcijo in sicer funkcijo $count_paths$, ki za vhodne podatke sprejme graf $G$, ter začetno in končno vozlišče, nato pa vrne število poti med tema vozliščema. Funkcija $pds$ nato uporabi $count\_paths$ na vseh parih vozlišč grafa $G$ in nato prišteva te vrednosti. Končen rezultat je torej Pingdingshanovo število. Tu bova navedla psevdokodo funkcije $count_paths$, ki izgleda takole: 
 
@@ -93,12 +90,10 @@ Za kubične grafe velja, da imajo vsa vozlišča v takem grafu stopnjo natanko 3
 Grafi brez trikotnikov oziroma grafi brez ciklov dolžine so definirani za vse možne $i = 1, 2, \dots ,8. Tudi te sva genenirala s pomočjo nauty.geng. Če želimo z nauty.geng zgenerirati grafe brez ciklov dolžine tri potrebujemo argument -t.
 
 ## 2 PRIMERJAVA PDS MED SKUPINAMI GRAFOV 
-(graf, navedba hipoteze)
-
 Za vsako družino grafov sva napisala funkcijo $max_pds()$, ki za vsakega od vozlišč $i = 1, \dots, 8$ izračuna maksimalno Pingdingshanovo število grafov znotraj te skupine. Vrednosti sva shranjevala v slovarje, kjer so ključi števila vozlišč, vrednosti pa maksimalna PDS. Slovar je torej oblike:
 
 $$
-\{1: \max\limits_{|V(G)|=1} PDS(G), \dots , 8: \max\limits_{|V(G)|=8} PDS(G)\}
+\{ 1: \max\limits_{|V(G)|=1} PDS(G), \dots , 8: \max\limits_{|V(G)|=8} PDS(G) \}
 $$
 
 Nato sva izrisala graf, na katerem so rasti vseh $4$ skupin grafov v odvisnosti od števila vozlišč. Ker so bile razlike v maksimalnih številih $pds(G)$ med družinami grafov res velike, sva uporabila logaritmirano skalo. Namen tega je bil, da si lažje predstavljava, kateri grafi imajo večje število $pds$ in da sva potem lažje oblikovala hipotezo.
@@ -112,7 +107,6 @@ Tu bova navedla najino hipotezo, ki je naslednja: največje število poti bodo i
 V nadaljevanju bova s stohastično analizo skušala to hipotezo potrditi ali ovreči.
 
 ## 3 STOHASTIČNA ANALIZA
-(algoritem, primerjava pdsja orignalnih grafov z pdsjem novih)
 Stohastične analize sva se lotila tako, da sva za posamezno skupino vsem grafom, v katerih so bili doseženi maksimumi za število pds odstanila naključno povezavo, ki ni bila most. Ta pogoj je ključen zato, da graf, ki nastane še vedno ostane povezan (analizirala sva namreč pds število na povezanih grafih). Če se na hitro spomnimo; povezava je most, če bi brez nje graf razpadel na več komponent. Najina hipoteza je, da več kot ima graf povezav višji bo njegov pds.Iz te hipoteze bi sledilo, da če grafu odstanimo povezavo se bo to precej poznalo tudi na njegovem pds številu. V tem razdelku projekta sva torej grafov odstanila naključno povezavo, izračunala pds novega grafa in izračunala razmerje med številov povezav v grafu in njegovim pds-jem. Zadnje sva naredila zato, da sva lahko opazovala kako hitro pada pds, če grafu odstanjujemo povezave. Vse to sva naredila s sledečimi funkcijami:
 ```python
 import random
@@ -253,7 +247,6 @@ Spodaj je grafičen prikaz razmerij za vsako družino grafov.
 
 
 ## 4 POLNI GRAFI 
-(podatki v prid hipoteze)
 Analize polnih grafov sva se lotila, da bi se približala potrditvi najine hipoteze. V tem delu naloge sva naprej naredila slovar vseh polnih grafov, tako da sva s for zanko šla čez vse grafe in preverjala, če ima graf maksimalno število povezav (to je toliko kot jih ima poln graf). Nato pa sva izračunala še pds števila za dobljene polne grafe. To sva nareila s sledečo funkcijo:
 ```python
 def slovar_polni_grafi():
