@@ -236,12 +236,12 @@ KUBIČNI GRAFI - nespremenjeni:
 {4: 0.17647058823529413, 6: 0.06666666666666667,
 8: 0.026905829596412557}
 ```
-KUBIČNI GRAFI - spremenjeni: (OPOMBA: Če kubičnemu grafu odstanimo eno povezavo, ta ni več kubičen, saj v njem obstajata dve vozlišči, ki nimata več stopnje 3.
+KUBIČNI GRAFI - spremenjeni: (OPOMBA: Če kubičnemu grafu odstanimo eno povezavo, ta ni več kubičen, saj v njem obstajata dve vozlišči, ki nimata več stopnje 3.)
 ```python
 {4: 0.21739130434782608, 6: 0.09195402298850575,
 8: 0.039285714285714285}
 ```
-    
+Če opazujemo vsa razmerja lahko opazimo, da so narasla, ker se je število povezav v števcu zmanjšalo samo za 1, moramo velike spremembe v razmerju pripisati imenovalcu. Kot vemo bo številka večja, če bo imenovalec manjši iz česar lahko sklepamo, da je pds število v spremenjenih grafih precej padlo. Opazimo tudi, da večje kot je število vozlišč bolj opazna je sprememba v razmerju. Pomembno se je zavedati tudi, da je funkcija, ki spreminja grafe nastavljena tako, da če ne najde povezave, ki ne bi bila most, ne osstani nobene (to pomeni, da vrne isti graf). Slednje je posebej pomembno za grafe brez trikotnikov na nižjih i-jih, pri katerih so vse povezave mostovi. V tem primeru ne bi bilo smiselno gledati pds-ja na spremenjenem grafu, saj ta avtomatično razpade.
 
 ## 4 POLNI GRAFI 
 (podatki v prid hipoteze)
